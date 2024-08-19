@@ -1,0 +1,9 @@
+{
+    "name": "a/a",
+    "description": "a",
+    "autoload": {
+
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
