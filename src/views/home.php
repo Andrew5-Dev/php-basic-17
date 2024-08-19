@@ -11,11 +11,11 @@
 <h3>Реезультат складання</h3>
 <form action="<?= url('') ?>" method="POST">
     <div>
-        <input type="number" name="number1" placeholder="number1">
+        <input type="text" name="number1" placeholder="number1">
         <?php showValidationError('number1')  ?>
     </div>
     <div>
-        <input type="number" name="number2" placeholder="number2">
+        <input type="text" name="number2" placeholder="number2">
         <?php showValidationError('number2')  ?>
     </div>
     <div>

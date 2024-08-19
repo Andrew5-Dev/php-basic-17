@@ -13,9 +13,16 @@ trait Validator
                     if ($this->moreThanZeroRule($field, $data) === false) {
                         $this->errors[$field][] = $this->getErrorMessage($rule, $field);
                     }
+                    // notStringRule
+                } elseif ($rule === 'notStringRule') {
+                    if ($this->notStringRule($field, $data) === false) {
+                        $this->errors[$field][] = $this->getErrorMessage($rule, $field);
+                    }
+                }
+                }
             }
         }
-    }}
+
 
 
     protected function minRule(string $field, int $number, array $data): bool
@@ -42,10 +49,19 @@ trait Validator
         return true;
     }
 
+    protected function notStringRule(string $field, array $data): bool
+    {
+        if (!isset($data[$field]) || !is_numeric($data[$field])) {
+            return false;
+        }
+        return true;
+    }
+
     protected function errors(): array
     {
         return [
             'moreThanZeroRule' => "Поле %s повинно бути більше нуля",
+            'notStringRule' => "Поле %s не повинно бути рядком",
         ];
     }
 
