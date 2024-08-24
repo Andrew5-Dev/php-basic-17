@@ -12,6 +12,7 @@
 <form action="<?= url('') ?>" method="POST">
     <div>
         <input type="text" name="number1" placeholder="number1">
+
         <?php showValidationError('number1')  ?>
     </div>
     <div>

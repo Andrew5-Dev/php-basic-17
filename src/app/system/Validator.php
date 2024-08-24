@@ -9,22 +9,28 @@ trait Validator
             foreach ($ruleArray as $rule) {
 
                 // required check
-                if ($rule === 'moreThanZeroRule') {
-                    if ($this->moreThanZeroRule($field, $data) === false) {
+                if ($rule === 'required') {
+                    if ($this->requiredRule($field, $data) === false) {
                         $this->errors[$field][] = $this->getErrorMessage($rule, $field);
                     }
-                    // notStringRule
-                } elseif ($rule === 'notStringRule') {
-                    if ($this->notStringRule($field, $data) === false) {
+                } elseif ($rule === 'email') {
+                    if ($this->emailRule($field, $data) === false) {
                         $this->errors[$field][] = $this->getErrorMessage($rule, $field);
                     }
-                }
+                } elseif (str_contains($rule, 'min:')) {
+                    [$ruleName, $number] = $this->parseRuleNumber($rule);
+                    if ($this->minRule($field, $number, $data) === false) {
+                        $this->errors[$field][] = $this->getErrorMessage($ruleName, $field, $number);
+                    }
                 }
             }
         }
+    }
 
-
-
+    private function parseRuleNumber(string $rule): array
+    {
+        return explode(':', $rule);
+    }
     protected function minRule(string $field, int $number, array $data): bool
     {
         if (!isset($data[$field]) || strlen($data[$field]) < $number) {
@@ -41,17 +47,9 @@ trait Validator
         return true;
     }
 
-    protected function moreThanZeroRule(string $field, array $data): bool
+    protected function emailRule(string $field, array $data): bool
     {
-        if (!isset($data[$field]) || $data[$field] <= 0) {
-            return false;
-        }
-        return true;
-    }
-
-    protected function notStringRule(string $field, array $data): bool
-    {
-        if (!isset($data[$field]) || !is_numeric($data[$field])) {
+        if (filter_var($data[$field] ?? '' , FILTER_VALIDATE_EMAIL) === false) {
             return false;
         }
         return true;
@@ -60,8 +58,11 @@ trait Validator
     protected function errors(): array
     {
         return [
-            'moreThanZeroRule' => "Поле %s повинно бути більше нуля",
-            'notStringRule' => "Поле %s не повинно бути рядком",
+            'required' => "Field %s is required",
+            'email' => "Field %s must be a valid email address",
+            'min' => "Field %s should be at least %d characters",
+            'max' => "Field %s should be less than %d characters",
+            'confirmed' => "Field %s does not match confirmation",
         ];
     }
 
