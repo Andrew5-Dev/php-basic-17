@@ -1,6 +1,6 @@
 <?php
-
-
+// Імена папок класув повінні мати такіж назви як самі класи
+//class homecontroller - поганий код - Імена класів ПОВИННІ бути оголошені в StudlyCaps. (Кожнеслово з великими літерами)
 class HomeController
 {
     use Validator;
@@ -11,7 +11,7 @@ class HomeController
 
     }
 
-    public function sumTwoNumbers()
+    public function sumTwoNumbers()   //Sumtwonumbers() - поганий код (Імена методів ПОВИННІ бути оголошені в сamelCase.)
     {
         $this->validate($_POST, [
             'number1' => [ 'moreThanZeroRule', 'notStringRule'],
